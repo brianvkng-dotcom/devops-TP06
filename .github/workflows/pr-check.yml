@@ -1,0 +1,38 @@
+---
+name: PR Check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  pr-check:
+    name: Pull Request Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run tests
+        run: |
+          cd backend
+          pytest tests/ -v
+
+      - name: Validate Docker Compose
+        run: docker compose config
