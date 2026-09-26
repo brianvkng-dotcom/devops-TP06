@@ -36,7 +36,9 @@ jobs:
         run: pip install flake8 yamllint
 
       - name: Run flake8
-  run: flake8 backend --exclude=backend/tests --max-line-length=100 --ignore=E401,E302,E305
+        run: >
+          flake8 backend --exclude=backend/tests
+          --max-line-length=100 --ignore=E401,E302,E305
 
       - name: Run yamllint
         run: yamllint docker-compose.yml .github/workflows/
